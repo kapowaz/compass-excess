@@ -1,0 +1,23 @@
+@mixin vendor-prefixed-properties($property, $value) {
+  -webkit-#{$property}: $value;
+  -moz-#{$property}: $value;
+  -ms-#{$property}: $value;
+  -o-#{$property}: $value;
+  $property: $value;
+}
+
+@mixin appearance($appearance) {
+  @include vendor-prefixed-properties(appearance, $appearance);
+}
+
+@mixin appearance-none {
+  @include appearance(none);
+}
+
+@mixin placeholder {
+  &.placeholder { @content }
+  &::placeholder { @content }
+  &:-ms-input-placeholder { @content }
+  &::-moz-placeholder { @content }
+  &::-webkit-input-placeholder { @content }
+}

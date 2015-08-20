@@ -1,0 +1,81 @@
+@mixin font-size($size: 1.4, $important: false) {
+  @if $important == true {
+    font-size: ($size * 10) + px !important;
+    font-size: $size + rem !important;
+  } @else {
+    font-size: ($size * 10) + px;
+    font-size: $size + rem;
+  }
+}
+
+@mixin line-height($size: 1.6, $force-height: false) {
+  @if $force-height == true {
+    height: ($size * 10) + px;
+  }
+  line-height: ($size * 10) + px;
+  line-height: $size + rem;
+}
+
+@mixin text-underline-hover {
+  text-decoration: none;
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+@mixin medium-text-underline-hover($color: black, $background-color: white, $font-size: 1.4, $line-height: 1.8, $stroke-width: 2px) {
+  display: inline-block;
+  text-decoration: none;
+  @include line-height($line-height * 1.1875);
+
+  body.mac &,
+  body.ios & {
+    @include line-height($line-height);
+  }
+
+  body.ie & {
+    @include line-height($line-height * 1.25);
+  }
+
+  &:hover {
+    $color-stop: percentage(1 - (1 / ($line-height * 11.875)));
+    @include background-image(linear-gradient($background-color, $background-color $color-stop, $color 100%));
+    @include text-shadow(0 1px 0 $stroke-width $background-color, 1px 0 0 $stroke-width $background-color, 0 -1px 0 $stroke-width $background-color, -1px 0 0 $stroke-width $background-color);
+  }
+
+  body.mac &:hover,
+  body.ios &:hover {
+    $color-stop: percentage(1 - (1 / ($line-height * 10)));
+    @include background-image(linear-gradient($background-color, $background-color $color-stop, $color 100%));
+  }
+
+  body.ie &:hover {
+    $color-stop: percentage(1 - (1 / ($line-height * 12.5)));
+    @include background-image(linear-gradient($background-color, $background-color $color-stop, $color 100%));
+  }
+}
+
+@mixin text-no-underline-hover {
+  &:hover { text-decoration: none; }
+}
+
+@mixin text-overflow-ellipsis {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+@mixin font-family($fontname, $filename, $weight: normal, $style: normal, $stretch: normal) {
+  @font-face {
+    font-family: $fontname;
+    src: font-url($filename + '.eot');
+    src: local($fontname), // disable this to test without the font installed locally
+      font-url($filename + '.eot?#iefix') format('embedded-opentype'),
+      font-url($filename + '.woff') format('woff'),
+      font-url($filename + '.ttf') format('truetype'),
+      font-url($filename + '.svg#' + $filename) format('svg');
+    font-weight: $weight;
+    font-style: $style;
+    font-stretch: $stretch;
+  }
+}

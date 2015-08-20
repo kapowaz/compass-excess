@@ -1,0 +1,20 @@
+@function color($key, $sub-key: null) {
+  @if $sub-key != null {
+    @if map-has-key($colors, $key) {
+      $sub-colors: map-get($colors, $key);
+
+      @if map-has-key($sub-colors, $sub-key) {
+        @return map-get($sub-colors, $sub-key);
+      }
+      @error "Unknown sub-color `#{$sub-key}` in $sub-colors.";
+      @return null;
+    }
+  } @else {
+    @if map-has-key($colors, $key) {
+      @return map-get($colors, $key);
+    }
+  }
+
+  @warn "Unknown color `#{$key}` in $colors.";
+  @return null;
+} // @function color()
