@@ -23,10 +23,16 @@
   }
 }
 
-@mixin medium-text-underline-hover($color: black, $background-color: white, $font-size: 1.4, $line-height: 1.8, $stroke-width: 2px) {
+$line-height-modifiers: (
+  default: 1.1875,
+  mac:     1,
+  ie:      1.25
+);
+
+@mixin text-underline-line-height($line-height) {
   display: inline-block;
   text-decoration: none;
-  @include line-height($line-height * 1.1875);
+  @include line-height($line-height * map-get($line-height-modifiers, default));
 
   body.mac &,
   body.ios & {
@@ -34,26 +40,106 @@
   }
 
   body.ie & {
-    @include line-height($line-height * 1.25);
+    @include line-height($line-height * map-get($line-height-modifiers, ie));
+  }
+} // @text-underline-line-height()
+
+@mixin text-underline-gradient(
+  $color,
+  $background-color,
+  $line-height,
+  $line-width,
+  $line-offset,
+  $platform: default
+) {
+  $line-width: $line-width / 1px;
+  $line-offset: $line-offset / 1px;
+  $line-height: $line-height * map-get($line-height-modifiers, $platform);
+
+  @if $line-offset == 0 {
+    $color-stop: percentage(1 - ($line-width / ($line-height * 10)));
+    @include background-image(
+      linear-gradient(
+        $background-color,
+        $background-color $color-stop,
+        $color $color-stop,
+        $color 100%
+      )
+    );
+  } @else {
+    $color-stop-1: percentage(1 - (($line-width + $line-offset) / ($line-height * 10)));
+    $color-stop-2: percentage(1 - ($line-offset / ($line-height * 10)));
+
+    @include background-image(
+      linear-gradient(
+        $background-color,
+        $background-color $color-stop-1,
+        $color $color-stop-1,
+        $color $color-stop-2,
+        $background-color $color-stop-2,
+        $background-color 100%
+      )
+    );
+  }
+} // @text-underline-gradient()
+
+@mixin text-underline-stroke($background-color, $stroke-width) {
+  @include text-shadow(
+    0 $stroke-width 0 $background-color,
+    $stroke-width 0 0 $background-color,
+    0 -1 * $stroke-width 0 $background-color,
+    -1 * $stroke-width 0 0 $background-color
+  );
+} // @text-underline-stroke()
+
+@mixin text-underline(
+  $color: black,
+  $background-color: white,
+  $font-size: 1.4,
+  $line-height: 1.8,
+  $stroke-width: 2px,
+  $line-width: 1px,
+  $line-offset: 0px
+) {
+  @include text-underline-line-height($line-height);
+  @include text-underline-gradient($color, $background-color, $line-height, $line-width, $line-offset, default);
+  @include text-underline-stroke($background-color, $stroke-width);
+
+  body.mac &,
+  body.ios & {
+    @include text-underline-gradient($color, $background-color, $line-height, $line-width, $line-offset, mac);
   }
 
+  body.ie & {
+    @include text-underline-gradient($color, $background-color, $line-height, $line-width, $line-offset, ie);
+  }
+} // @text-underline()
+
+@mixin medium-text-underline-hover(
+  $color: black,
+  $background-color: white,
+  $font-size: 1.4,
+  $line-height: 1.8,
+  $stroke-width: 2px,
+  $line-width: 1px,
+  $line-offset: 0px
+) {
+  @include text-underline-line-height($line-height);
+
   &:hover {
-    $color-stop: percentage(1 - (1 / ($line-height * 11.875)));
-    @include background-image(linear-gradient($background-color, $background-color $color-stop, $color 100%));
-    @include text-shadow(0 1px 0 $stroke-width $background-color, 1px 0 0 $stroke-width $background-color, 0 -1px 0 $stroke-width $background-color, -1px 0 0 $stroke-width $background-color);
+    @include text-underline-gradient($color, $background-color, $line-width, $line-height, $line-offset);
+    @include text-underline-stroke($background-color, $stroke-width);
   }
 
   body.mac &:hover,
   body.ios &:hover {
-    $color-stop: percentage(1 - (1 / ($line-height * 10)));
-    @include background-image(linear-gradient($background-color, $background-color $color-stop, $color 100%));
+    @include text-underline-gradient($color, $background-color, $line-width, $line-height, $line-offset, mac);
   }
 
   body.ie &:hover {
-    $color-stop: percentage(1 - (1 / ($line-height * 12.5)));
-    @include background-image(linear-gradient($background-color, $background-color $color-stop, $color 100%));
+    @include text-underline-gradient($color, $background-color, $line-width, $line-height, $line-offset, ie);
   }
-}
+} // @medium-text-underline-hover()
 
 @mixin text-no-underline-hover {
   &:hover { text-decoration: none; }
@@ -65,7 +151,14 @@
   text-overflow: ellipsis;
 }
 
-@mixin font-family($fontname, $filename, $weight: normal, $style: normal, $stretch: normal, $range: false) {
+@mixin font-family(
+  $fontname,
+  $filename,
+  $weight: normal,
+  $style: normal,
+  $stretch: normal,
+  $range: false
+) {
   @font-face {
     font-family: $fontname;
     src: font-url($filename + '.eot');
