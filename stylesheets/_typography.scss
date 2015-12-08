@@ -49,7 +49,7 @@ $line-height-modifiers: (
   $background-color,
   $line-height,
   $line-width,
-  $line-offset,
+  $line-offset: 0px,
   $platform: default
 ) {
   $line-width: $line-width / 1px;
@@ -83,18 +83,19 @@ $line-height-modifiers: (
   }
 } // @text-underline-gradient()
 
-@mixin text-underline-stroke($background-color, $stroke-width) {
+@mixin text-underline-stroke($stroke-color, $stroke-width) {
   @include text-shadow(
-    0 $stroke-width 0 $background-color,
-    $stroke-width 0 0 $background-color,
-    0 -1 * $stroke-width 0 $background-color,
-    -1 * $stroke-width 0 0 $background-color
+    0 $stroke-width 0 $stroke-color,
+    $stroke-width 0 0 $stroke-color,
+    0 -1 * $stroke-width 0 $stroke-color,
+    -1 * $stroke-width 0 0 $stroke-color
   );
 } // @text-underline-stroke()
 
 @mixin text-underline(
   $color: black,
-  $background-color: white,
+  $background-color: transparent,
+  $stroke-color: white,
   $font-size: 1.4,
   $line-height: 1.8,
   $stroke-width: 2px,
@@ -103,7 +104,7 @@ $line-height-modifiers: (
 ) {
   @include text-underline-line-height($line-height);
   @include text-underline-gradient($color, $background-color, $line-height, $line-width, $line-offset, default);
-  @include text-underline-stroke($background-color, $stroke-width);
+  @include text-underline-stroke($stroke-color, $stroke-width);
 
   body.mac &,
   body.ios & {
@@ -115,9 +116,10 @@ $line-height-modifiers: (
   }
 } // @text-underline()
 
-@mixin medium-text-underline-hover(
+@mixin text-underline-hover(
   $color: black,
-  $background-color: white,
+  $background-color: transparent,
+  $stroke-color: white,
   $font-size: 1.4,
   $line-height: 1.8,
   $stroke-width: 2px,
@@ -128,7 +130,7 @@ $line-height-modifiers: (
 
   &:hover {
     @include text-underline-gradient($color, $background-color, $line-width, $line-height, $line-offset);
-    @include text-underline-stroke($background-color, $stroke-width);
+    @include text-underline-stroke($stroke-color, $stroke-width);
   }
 
   body.mac &:hover,
@@ -139,7 +141,7 @@ $line-height-modifiers: (
   body.ie &:hover {
     @include text-underline-gradient($color, $background-color, $line-width, $line-height, $line-offset, ie);
   }
-} // @medium-text-underline-hover()
+} // @text-underline-hover()
 
 @mixin text-no-underline-hover {
   &:hover { text-decoration: none; }
