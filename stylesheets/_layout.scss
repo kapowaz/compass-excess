@@ -19,11 +19,15 @@
 } // @mixin unstyled-list
 
 @function breakpoint($width) {
-  @if map-has-key($breakpoints, $width) {
-    @return map-get($breakpoints, $width);
+  @if type-of($width) == 'number' {
+    @return $width;
+  } @elseif type-of($width) == 'string' {
+    @if map-has-key($breakpoints, $width) {
+      @return map-get($breakpoints, $width);
+    }
+    @error "No breakpoint called `#{$width}` exists in the `$breakpoints` map";
   }
 
-  @warn "No breakpoint called `#{$width}` exists in the `$breakpoints` map";
   @return null;
 } // @function breakpoint()
 

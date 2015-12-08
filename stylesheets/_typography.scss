@@ -30,9 +30,9 @@ $line-height-modifiers: (
 );
 
 @mixin text-underline-line-height($line-height) {
-  display: inline-block;
   text-decoration: none;
   @include line-height($line-height * map-get($line-height-modifiers, default));
+  background-repeat: repeat-x;
 
   body.mac &,
   body.ios & {
