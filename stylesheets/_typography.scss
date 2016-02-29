@@ -44,45 +44,6 @@ $line-height-modifiers: (
   }
 } // @text-underline-line-height()
 
-@mixin text-underline-gradient(
-  $color,
-  $background-color,
-  $line-height,
-  $line-width,
-  $line-offset: 0px,
-  $platform: default
-) {
-  $line-width: $line-width / 1px;
-  $line-offset: $line-offset / 1px;
-  $line-height: $line-height * map-get($line-height-modifiers, $platform);
-
-  @if $line-offset == 0 {
-    $color-stop: percentage(1 - ($line-width / ($line-height * 10)));
-    @include background-image(
-      linear-gradient(
-        $background-color,
-        $background-color $color-stop,
-        $color $color-stop,
-        $color 100%
-      )
-    );
-  } @else {
-    $color-stop-1: percentage(1 - (($line-width + $line-offset) / ($line-height * 10)));
-    $color-stop-2: percentage(1 - ($line-offset / ($line-height * 10)));
-
-    @include background-image(
-      linear-gradient(
-        $background-color,
-        $background-color $color-stop-1,
-        $color $color-stop-1,
-        $color $color-stop-2,
-        $background-color $color-stop-2,
-        $background-color 100%
-      )
-    );
-  }
-} // @text-underline-gradient()
-
 @mixin text-underline-stroke($stroke-color, $stroke-width) {
   @include text-shadow(
     0 $stroke-width 0 $stroke-color,
@@ -103,17 +64,7 @@ $line-height-modifiers: (
   $line-offset: 0px
 ) {
   @include text-underline-line-height($line-height);
-  @include text-underline-gradient($color, $background-color, $line-height, $line-width, $line-offset, default);
   @include text-underline-stroke($stroke-color, $stroke-width);
-
-  body.mac &,
-  body.ios & {
-    @include text-underline-gradient($color, $background-color, $line-height, $line-width, $line-offset, mac);
-  }
-
-  body.ie & {
-    @include text-underline-gradient($color, $background-color, $line-height, $line-width, $line-offset, ie);
-  }
 } // @text-underline()
 
 @mixin text-underline-hover(
@@ -129,17 +80,7 @@ $line-height-modifiers: (
   @include text-underline-line-height($line-height);
 
   &:hover {
-    @include text-underline-gradient($color, $background-color, $line-width, $line-height, $line-offset);
     @include text-underline-stroke($stroke-color, $stroke-width);
-  }
-
-  body.mac &:hover,
-  body.ios &:hover {
-    @include text-underline-gradient($color, $background-color, $line-width, $line-height, $line-offset, mac);
-  }
-
-  body.ie &:hover {
-    @include text-underline-gradient($color, $background-color, $line-width, $line-height, $line-offset, ie);
   }
 } // @text-underline-hover()
 
