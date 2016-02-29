@@ -50,6 +50,6 @@
 } // @mixin between-widths
 
 @mixin desktop-width {
-  max-width: breakpoint(desktop_small);
+  max-width: breakpoint(desktop_medium);
   margin: 0 auto;
 } // @mixin desktop-width
