@@ -23,27 +23,6 @@
   }
 }
 
-$line-height-modifiers: (
-  default: 1.1875,
-  mac:     1,
-  ie:      1.25
-);
-
-@mixin text-underline-line-height($line-height) {
-  text-decoration: none;
-  @include line-height($line-height * map-get($line-height-modifiers, default));
-  background-repeat: repeat-x;
-
-  body.mac &,
-  body.ios & {
-    @include line-height($line-height);
-  }
-
-  body.ie & {
-    @include line-height($line-height * map-get($line-height-modifiers, ie));
-  }
-} // @text-underline-line-height()
-
 @mixin text-underline-stroke($stroke-color, $stroke-width) {
   @include text-shadow(
     0 $stroke-width 0 $stroke-color,
@@ -52,37 +31,6 @@ $line-height-modifiers: (
     -1 * $stroke-width 0 0 $stroke-color
   );
 } // @text-underline-stroke()
-
-@mixin text-underline(
-  $color: black,
-  $background-color: transparent,
-  $stroke-color: white,
-  $font-size: 1.4,
-  $line-height: 1.8,
-  $stroke-width: 2px,
-  $line-width: 1px,
-  $line-offset: 0px
-) {
-  @include text-underline-line-height($line-height);
-  @include text-underline-stroke($stroke-color, $stroke-width);
-} // @text-underline()
-
-@mixin text-underline-hover(
-  $color: black,
-  $background-color: transparent,
-  $stroke-color: white,
-  $font-size: 1.4,
-  $line-height: 1.8,
-  $stroke-width: 2px,
-  $line-width: 1px,
-  $line-offset: 0px
-) {
-  @include text-underline-line-height($line-height);
-
-  &:hover {
-    @include text-underline-stroke($stroke-color, $stroke-width);
-  }
-} // @text-underline-hover()
 
 @mixin text-no-underline-hover {
   &:hover { text-decoration: none; }
