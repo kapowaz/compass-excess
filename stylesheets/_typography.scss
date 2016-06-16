@@ -45,7 +45,6 @@ $line-height-modifiers: (
   $line-offset: 0px,
   $platform: default
 ) {
-  $line-width: $line-width / 1px;
   $line-offset: $line-offset / 1px;
   $line-height: $line-height * map-get($line-height-modifiers, $platform);
 
@@ -116,7 +115,7 @@ $line-height-modifiers: (
   $font-size: 1.4,
   $line-height: 1.8,
   $stroke-width: 2px,
-  $line-width: 1px,
+  $line-width: 1,
   $line-offset: 0px
 ) {
   @include text-underline-line-height($line-height);
