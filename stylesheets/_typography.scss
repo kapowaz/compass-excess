@@ -42,15 +42,21 @@ $line-height-modifiers: (
   $background-color,
   $line-height,
   $line-width,
-  $line-offset: 0px,
+  $line-offset: 0,
   $platform: default
 ) {
-  $line-width: $line-width / 1px;
-  $line-offset: $line-offset / 1px;
+
+  @if not unitless($line-width) {
+    $line-width: $line-width / 1px;
+  }
+
+  @if not unitless($line-offset) {
+    $line-offset: $line-offset / 1px;
+  }
+
   $line-height: $line-height * map-get($line-height-modifiers, $platform);
 
   @if $line-offset == 0 {
-    @debug $line-width;
     $color-stop: percentage(1 - ($line-width / ($line-height * 10)));
     @include background-image(
       linear-gradient(
@@ -118,7 +124,7 @@ $line-height-modifiers: (
   $line-height: 1.8,
   $stroke-width: 2px,
   $line-width: 1,
-  $line-offset: 0px
+  $line-offset: 0
 ) {
   @include text-underline-line-height($line-height);
 
