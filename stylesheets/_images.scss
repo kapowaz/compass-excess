@@ -9,16 +9,32 @@
 @mixin background-image-file($url, $background-size: null, $background-position: null, $background-repeat: no-repeat, $type: 'png', $retina: true) {
   @if $url == none {
     background-image: none;
+
     @if ($retina) {
       @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min-device-pixel-ratio: 2), only screen and (-webkit-min-device-pixel-ratio: 3), only screen and (min-device-pixel-ratio: 3) {
         & { background-image: none; }
       }
     }
   } @else {
-    @if $retina {
-      background-image: image-url($url + '@1x.' + $type);
-    } @else {
+
+    @if $type == 'svg' {
       background-image: image-url($url + '.' + $type);
+    } @else {
+      @if $retina {
+        background-image: image-url($url + '@1x.' + $type);
+      } @else {
+        background-image: image-url($url + '.' + $type);
+      }
+
+      @if ($retina) {
+        @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min-device-pixel-ratio: 2) {
+          & { background-image: image-url($url + '@2x.' + $type); }
+        }
+
+        @media only screen and (-webkit-min-device-pixel-ratio: 3), only screen and (min-device-pixel-ratio: 3) {
+          & { background-image: image-url($url + '@3x.' + $type); }
+        }
+      }
     }
 
     @if $background-position {
@@ -29,19 +45,9 @@
       background-size: $background-size;
     }
 
-    @if ($retina) {
-      @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min-device-pixel-ratio: 2) {
-        & { background-image: image-url($url + '@2x.' + $type); }
-      }
-
-      @media only screen and (-webkit-min-device-pixel-ratio: 3), only screen and (min-device-pixel-ratio: 3) {
-        & { background-image: image-url($url + '@3x.' + $type); }
-      }
-    }
-
     background-repeat: $background-repeat;
   }
-}
+} // @mixin background-image-file
 
 @mixin background-image-gradient($url, $background-image-size, $gradients...) {
   @include background-image(image-url($url + '@1x.png'), $gradients);
