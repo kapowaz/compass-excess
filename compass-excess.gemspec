@@ -12,7 +12,6 @@ Gem::Specification.new do |spec|
   spec.authors       = ["Ben Darlow"]
   spec.email         = ["ben@kapowaz.net"]
   spec.license       = 'MIT'
-  spec.has_rdoc      = false
   spec.files         = `git ls-files`.split("\n")
   spec.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
   spec.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
