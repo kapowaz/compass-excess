@@ -6,7 +6,7 @@
   height: $height;
 }
 
-@mixin background-image-file($url, $background-size: null, $background-position: null, $background-repeat: no-repeat, $type: 'png', $retina: true) {
+@mixin background-image-file($url, $background-size: null, $background-position: null, $background-repeat: no-repeat, $type: 'png', $retina: true, $include_3x: true) {
   @if $url == none {
     background-image: none;
 
@@ -30,9 +30,10 @@
         @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min-device-pixel-ratio: 2) {
           & { background-image: image-url($url + '@2x.' + $type); }
         }
-
-        @media only screen and (-webkit-min-device-pixel-ratio: 3), only screen and (min-device-pixel-ratio: 3) {
-          & { background-image: image-url($url + '@3x.' + $type); }
+        @if ($include_3x) {
+          @media only screen and (-webkit-min-device-pixel-ratio: 3), only screen and (min-device-pixel-ratio: 3) {
+            & { background-image: image-url($url + '@3x.' + $type); }
+          }
         }
       }
     }
